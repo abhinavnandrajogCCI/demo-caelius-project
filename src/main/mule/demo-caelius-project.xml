@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="761de018-4781-4647-b3a5-9b156cd73eff" basePath="/jenkins" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="demo-caelius-projectFlow" doc:id="80a25b52-3816-42ee-b5eb-d694933a2154" >
+		<http:listener doc:name="Listener" doc:id="987a7892-e4fe-4b25-b2ea-138ff845c6bb" config-ref="HTTP_Listener_config" path="/demo"/>
+		<logger level="INFO" doc:name='Start Logger' doc:id="e680aca6-4e8b-4f8c-b7bb-031a00ef9dcf" message='"Start Logger"'/>
+		<ee:transform doc:name="Response" doc:id="7580f079-8607-4d43-819f-9ba0428b79bf" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"Message": "In Jenkins Demo Project"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End Logger" doc:id="5fa01f4f-83b3-4d99-8d6f-7d9f874cfada" message='"End Logger"'/>
+	</flow>
+</mule>
